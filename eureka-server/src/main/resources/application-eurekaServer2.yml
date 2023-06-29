@@ -1,0 +1,17 @@
+server:
+  port: 12345
+
+eureka:
+  instance:
+    hostname: eureka-server-02
+    lease-expiration-duration-in-seconds: 90 # Eureka Server默认清除client的时间
+    lease-renewal-interval-in-seconds: 30 # 默认心跳时间30s
+  client:
+    # 表示是否注册自身到eureka服务器
+    register-with-eureka: false
+    #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+    fetch-registry: false
+    service-url:
+      #defaultZone:指定Eureka注册中心的地址,当Eureka不是使用默认端口时,可以在服务客户端以及服务提供端进行配置实现Eureka的自定义端口
+      #defaultZone是一个Map集合类型，可以实现注册中心集群搭建
+      defaultZone: http://eureka-server-01:10010/eureka
