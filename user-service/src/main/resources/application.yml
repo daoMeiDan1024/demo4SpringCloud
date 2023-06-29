@@ -10,6 +10,7 @@ mybatis:
   type-aliases-package: com.daomeidan.userService.pojo
   configuration:
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   level:
     cn.itcast: debug
