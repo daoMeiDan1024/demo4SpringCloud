@@ -1,0 +1,15 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    # 表示是否注册自身到eureka服务器
+    register-with-eureka: true
+    service-url:
+      #defaultZone:指定Eureka注册中心的地址,当Eureka不是使用默认端口时,可以在服务客户端以及服务提供端进行配置实现Eureka的自定义端口
+      #defaultZone是一个Map集合类型，可以实现注册中心集群搭建
+      defaultZone: http://localhost:10010/eureka
+

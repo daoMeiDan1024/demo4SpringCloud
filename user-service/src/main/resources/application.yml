@@ -1,11 +1,19 @@
 server:
   port: 8091
 spring:
+  application:
+    name: user-service #当前服务的服务名，用于注册中心中调用该服务时使用
   datasource:
     url: jdbc:mysql://localhost:3306/cloud_user?useSSL=false
     username: root
     password: "0000"
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10010/eureka
+
 mybatis:
   type-aliases-package: com.daomeidan.userService.pojo
   configuration:
