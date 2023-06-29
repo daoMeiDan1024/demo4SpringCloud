@@ -224,5 +224,67 @@ spring框架自身提供的支持HTTP请求的工具，可以发起get、post等
    }
    ```
 
+##### 高可用集群搭建
 
+1. 修改yml配置文件，主要模拟多台eureka服务器搭建集群
+
+   ```yml
+   spring:
+     application:
+       name: eureka-server
+     profiles:
+       active: eurekaServer1
+   ---
+   server:
+     port: 10010
+   
+   eureka:
+     instance:
+       hostname: eureka-server-01
+       lease-expiration-duration-in-seconds: 90 # Eureka Server默认清除client的时间
+       lease-renewal-interval-in-seconds: 30 # 默认心跳时间30s
+     client:
+       # 表示是否注册自身到eureka服务器
+       register-with-eureka: false
+       #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+       fetch-registry: false
+       service-url:
+         #defaultZone:指定Eureka注册中心的地址,当Eureka不是使用默认端口时,可以在服务客户端以及服务提供端进行配置实现Eureka的自定义端口
+         #defaultZone是一个Map集合类型，可以实现注册中心集群搭建
+         defaultZone: http://eureka-server-02:12345/eureka
+   
+   ---
+   server:
+     port: 12345
+   
+   eureka:
+     instance:
+       hostname: eureka-server-02
+       lease-expiration-duration-in-seconds: 90 # Eureka Server默认清除client的时间
+       lease-renewal-interval-in-seconds: 30 # 默认心跳时间30s
+     client:
+       # 表示是否注册自身到eureka服务器
+       register-with-eureka: false
+       #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+       fetch-registry: false
+       service-url:
+         #defaultZone:指定Eureka注册中心的地址,当Eureka不是使用默认端口时,可以在服务客户端以及服务提供端进行配置实现Eureka的自定义端口
+         #defaultZone是一个Map集合类型，可以实现注册中心集群搭建
+         defaultZone: http://eureka-server-01:10010/eureka
+   ```
+
+2. 修改`user-service`和`order-service`两个服务中的配置文件
+
+   ```yml
+   eureka:
+     client:
+       service-url:
+         defaultZone: http://127.0.0.1:10010/eureka, http://eureka-server-02:12345/eureka
+   ```
+
+3. 启动配置
+
+   <img src="imgs/image-20230629172855130.png" alt="image-20230629172855130" style="zoom:80%;" />
+
+   
 

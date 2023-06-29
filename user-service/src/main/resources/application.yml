@@ -12,7 +12,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://127.0.0.1:10010/eureka
+      defaultZone: http://127.0.0.1:10010/eureka, http://eureka-server-02:12345/eureka
 
 mybatis:
   type-aliases-package: com.daomeidan.userService.pojo
